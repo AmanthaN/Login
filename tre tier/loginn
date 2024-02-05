@@ -1,0 +1,73 @@
+import React, { useState } from 'react';
+
+const Login = () => {
+  // State to store user input
+  const [credentials, setCredentials] = useState({
+    username: '',
+    password: '',
+  });
+
+  // Function to handle input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCredentials({ ...credentials, [name]: value });
+  };
+
+  // Function to handle login
+  const handleLogin = async () => {
+    try {
+      // Assuming you have a backend API for authentication
+      const response = await fetch('your_authentication_api', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
+      });
+
+      const data = await response.json();
+
+      // Check if authentication was successful
+      if (response.ok) {
+        // Redirect or perform actions for successful login
+        console.log('Login successful!');
+      } else {
+        // Handle authentication failure
+        console.error('Login failed:', data.message);
+      }
+    } catch (error) {
+      console.error('Error during login:', error.message);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Login</h2>
+      <form>
+        <div>
+          <label>Username:</label>
+          <input
+            type="text"
+            name="username"
+            value={credentials.username}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            name="password"
+            value={credentials.password}
+            onChange={handleInputChange}
+          />
+        </div>
+        <button type="button" onClick={handleLogin}>
+          Login
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default Login;
